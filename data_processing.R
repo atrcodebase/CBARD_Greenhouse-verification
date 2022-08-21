@@ -47,6 +47,14 @@ data <- data %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_dat
 family_roster <- family_roster %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_date)
 crops <- crops %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_date)
 
+# progress report ----------------------------------------
+# file.edit("R/progress_report.R")
+sampling <- read.csv(file = sampling_path)
+weekly_start_date <- "2022-08-20" # keep updating this
+weekly_end_date <- "2022-08-23" # keep updating htis
+
+source("R/progress_report.R")
+
 # data for dashboard ----------------------------------------
 dash_dt <- list(
   data = data,
