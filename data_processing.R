@@ -29,3 +29,6 @@ crops <- readxl::read_excel(data_path, sheet = "Crops")
 googlesheets4::gs4_deauth()
 qa_log <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/117MxcnblNnwndZzClsXrf3JJJi_MNVIwFktocRiOxL4/edit?usp=sharing", sheet = "QA_Log")
 
+# qa-backlog ----------------------------------------
+# file.edit("R/qa_backlog.R")
+source("R/qa_backlog.R")
