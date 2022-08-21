@@ -32,3 +32,41 @@ qa_log <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/117M
 # qa-backlog ----------------------------------------
 # file.edit("R/qa_backlog.R")
 source("R/qa_backlog.R")
+
+# data cleaning ----------------------------------------
+# file.edit("R/data_cleaning.R")
+source("R/data_cleaning.R")
+
+# filter for specific dates ----------------------------------------
+count(data, SubmissionDate)
+
+start_date <- "2022-08-19" # start date of data collection
+end_date <- "2022-08-23" # keep updating this
+
+data <- data %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_date)
+family_roster <- family_roster %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_date)
+crops <- crops %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_date)
+
+# data for dashboard ----------------------------------------
+dash_dt <- list(
+  data = data,
+  Family_Roster = family_roster,
+  Crops = crops
+)
+
+# cleaned data ----------------------------------------
+count(data, qa_status)
+count(family_roster, qa_status)
+count(crops, qa_status)
+
+cleaned_dt <- list(
+  data = filter(data, qa_status == "Approved"),
+  Family_Roster = filter(family_roster, qa_status == "Approved"),
+  Crops = filter(crops, qa_status == "Approved")
+)
+
+# export result ----------------------------------------
+writexl::write_xlsx(x = dash_dt, path = "output/dashboard_data/CBARD_Greenhouse_Verification_dashboard_dt.xlsx")
+writexl::write_xlsx(x = cleaned_dt, path = "output/cleaned_data/CBARD_Greenhouse_Verification_cleaned_dt.xlsx")
+writexl::write_xlsx(x = progress_report, path = glue::glue("output/weekly_reports/progress_report_{Sys.Date()}.xlsx"))
+writexl::write_xlsx(x = qa_log, path = glue::glue("output/qa_log_{Sys.Date()}.xlsx"))
