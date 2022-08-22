@@ -21,12 +21,15 @@ progress_report_cumulative <- full_join(sampling %>%
 progress_report_cumulative
 
 ## progress report - weekly
-progress_report_weekly <- data %>% 
-    filter(SubmissionDate >= weekly_start_date & SubmissionDate <= weekly_end_date) %>% 
-    group_by(Province, District) %>% 
-    count(qa_status) %>% 
-    pivot_wider(names_from = qa_status, values_from = n)
-
+progress_report_weekly <- data %>%
+  filter(SubmissionDate >= weekly_start_date & SubmissionDate <= weekly_end_date) %>%
+  group_by(Province, District) %>%
+  count(qa_status) %>%
+  pivot_wider(names_from = qa_status, values_from = n) %>% 
+  mutate(across(everything(), function(x)
+    ifelse(is.na(x), 0, x)
+    ))
+  
 cat(glue::glue("Progress report, cumulative: from {start_date} to {end_date}."))
 print(knitr::kable(progress_report_cumulative, format = "simple"))
 cat("\n")
