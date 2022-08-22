@@ -2,7 +2,8 @@
 # remove unnecessary columns ----------------------------------------
 extra_cols <- c("Starttime", "Endtime", "Deviceid", "Subscriberid", "Simid", "Devicephonenum", "Username", "mean_light_level", "sd_light_level",
                 "mean_movement", "sd_movement", "mean_sound_level", "sd_sound_level", "pct_quiet", "pct_still", "Text_Audio", "Audio_Audit",
-                "instanceID", "instanceName", "formdef_version", "i", "ii", "Location_Dari", "Location_Pashto", "Type_Dari", "Type_Pashto")
+                "instanceID", "instanceName", "formdef_version", "i", "ii", "Location_Dari", "Location_Pashto", "Type_Dari", "Type_Pashto",
+                "Family_Roster_count", "N_Crops", "Crops_count", "review_status", "review_quality", "review_comments", "review_corrections", "G9_Label")
 
 data <- data %>% select(-any_of(extra_cols), -starts_with("SET-OF"))
 family_roster <- family_roster %>% select(-any_of(extra_cols), -starts_with("SET-OF"))
