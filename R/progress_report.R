@@ -1,16 +1,19 @@
 ## progress report - cumulative
 progress_report_cumulative <- full_join(sampling %>% 
                                           group_by(Province = q3, District = q4) %>% 
-                                          count(name = "target")
+                                          count(name = "Target") %>% 
+                                          mutate(District = str_trim(District))
                                         ,
                                         data %>% 
                                           group_by(Province, District) %>% 
-                                          count(name = "visited")
+                                          count(name = "N-Interviews") %>% 
+                                          mutate(District = str_trim(District))
                                         ,
                                         by = c("Province", "District")) %>% 
   full_join(data %>% 
               group_by(Province, District) %>% 
               count(qa_status) %>% 
+              mutate(District = str_trim(District)) %>% 
               pivot_wider(names_from = qa_status, values_from = n)
             ,
             by = c("Province", "District")) %>% 

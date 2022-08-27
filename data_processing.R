@@ -21,14 +21,20 @@ tool_path <- "input/tool/CBARD_Greenhouse_Verification.xlsx"
 sampling_path <- "input/sampling/cbardsampling.csv"
 
 # read data ----------------------------------------
-data <- readxl::read_excel(data_path, sheet = "data")
-family_roster <- readxl::read_excel(data_path, sheet = "Family_Roster")
-crops <- readxl::read_excel(data_path, sheet = "Crops")
+data <- readxl::read_excel(data_path, sheet = "data", na = c("", "-", " ", "NA", "N/A"))
+family_roster <- readxl::read_excel(data_path, sheet = "Family_Roster", na = c("", "-", " ", "NA", "N/A"))
+crops <- readxl::read_excel(data_path, sheet = "Crops", na = c("", "-", " ", "NA", "N/A"))
+
+data <- data %>% 
+  mutate(Province = ifelse(is.na(Province) & TPM %in% c("TPM-NGR-ACHIN-019", "TPM-NGR-ACHIN-017"), "Nangarhar", Province),
+         District = ifelse(is.na(District) & TPM %in% c("TPM-NGR-ACHIN-019", "TPM-NGR-ACHIN-017"), "Achin", District),
+         Village_Name = ifelse(is.na(Village_Name) & TPM %in% c("TPM-NGR-ACHIN-019", "TPM-NGR-ACHIN-017"), "Landay Qala(Sra Qala)", Village_Name)
+         )
 
 # read qa-log ----------------------------------------
 googlesheets4::gs4_deauth()
 qa_log <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/117MxcnblNnwndZzClsXrf3JJJi_MNVIwFktocRiOxL4/edit?usp=sharing", sheet = "QA_Log")
-
+count(qa_log, `Final QA Status`)
 # qa-backlog ----------------------------------------
 # file.edit("R/qa_backlog.R")
 source("R/qa_backlog.R")
@@ -40,8 +46,8 @@ source("R/data_cleaning.R")
 # filter for specific dates ----------------------------------------
 count(data, SubmissionDate)
 
-start_date <- "2022-08-19" # start date of data collection
-end_date <- "2022-08-23" # keep updating this
+start_date <- "2022-08-20" # start date of data collection
+end_date <- "2022-08-31" # keep updating this
 
 data <- data %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_date)
 family_roster <- family_roster %>% filter(SubmissionDate >= start_date & SubmissionDate <= end_date)
@@ -78,3 +84,4 @@ writexl::write_xlsx(x = dash_dt, path = "output/dashboard_data/CBARD_Greenhouse_
 writexl::write_xlsx(x = cleaned_dt, path = "output/cleaned_data/CBARD_Greenhouse_Verification_cleaned_dt.xlsx")
 writexl::write_xlsx(x = progress_report, path = glue::glue("output/weekly_reports/progress_report_{Sys.Date()}.xlsx"))
 writexl::write_xlsx(x = qa_log, path = glue::glue("output/qa_log_{Sys.Date()}.xlsx"))
+
