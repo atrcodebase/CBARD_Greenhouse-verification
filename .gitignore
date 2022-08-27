@@ -1,4 +1,9 @@
 *.Rproj
+*.dbf
+*.prj
+*.shx
+*.shp
+dashboard/rsconnect/*
 
 *.xlsx
 *.xls
