@@ -52,11 +52,11 @@ main_cols <- c("SubmissionDate", "Province", "District", "Village_Name", "TPM", 
 
 family_roster <- right_join(data %>% select(all_of(main_cols)),
                             family_roster, by = "PARENT_KEY") %>% 
-  relocate(PARENT_KEY, .before = KEY)
+  relocate(qa_status, PARENT_KEY, .before = KEY)
 
 crops <- right_join(data %>% select(all_of(main_cols)),
                     crops, by = "PARENT_KEY") %>% 
-  relocate(PARENT_KEY, .before = KEY)
+  relocate(qa_status, PARENT_KEY, .before = KEY)
 
 print("--------------- Merge questions from main sheet to child sheets.")
 
