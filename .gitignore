@@ -4,6 +4,7 @@
 *.shx
 *.shp
 dashboard/rsconnect/*
+only_me/*
 
 *.xlsx
 *.xls
