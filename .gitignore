@@ -5,6 +5,8 @@
 *.shp
 dashboard/rsconnect/*
 only_me/*
+*.jpg
+*.png
 
 *.xlsx
 *.xls
