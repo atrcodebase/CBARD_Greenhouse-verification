@@ -27,5 +27,8 @@ cat("Only displays the dates where there is still QA Backlog:")
 print(knitr::kable(unresolved_cases_summary, format = "simple"))
 
 rm(unresolved_cases_summary)
-
+rm(unresolved_cases)
+rm(data_path)
+rm(url)
+rm(qa_log)
 
